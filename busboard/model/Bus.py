@@ -36,7 +36,7 @@ class BusInfo:
             f"https://api-nile.tfl.gov.uk/Line/{line_id}/Route/Sequence/{direction}?serviceTypes=Regular&excludeCrowding=true&app_id={api_key}&app_key={api_key}")
         text = response.text
         data = json.loads(text)
-
+        print(data)
         station_data = data['stations']
         stations = []
 
