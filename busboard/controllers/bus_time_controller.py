@@ -27,7 +27,7 @@ def bus_controller(app):
 def get_buses(stop_code):
     api_key = os.getenv("API_KEY")
     response = requests.get(
-        f"https://api-nile.tfl.gov.uk/StopPoint/{stop_code}/Arrivals?app_id={api_key}&app_key={api_key}")
+        f"https://api.tfl.gov.uk/StopPoint/{stop_code}/Arrivals")
 
     text = response.text
     data = json.loads(text)
@@ -41,12 +41,10 @@ def get_buses(stop_code):
 
 
 def get_bus_stops(postcode, radius):
-    api_key = os.getenv("API_KEY")
     long, lat = get_coordinates(postcode)
     response = requests.get(
-        f"https://api-nile.tfl.gov.uk/StopPoint?stopTypes=NaptanPublicBusCoachTram&radius={radius}&useStopPointHierarchy=false&modes=bus&categories=none&returnLines=false&lat={lat}&lon={long}&app_id={api_key}&app_key={api_key}")
+        f"https://api.tfl.gov.uk/StopPoint?stopTypes=NaptanPublicBusCoachTram&radius={radius}&useStopPointHierarchy=false&modes=bus&categories=none&returnLines=false&lat={lat}&lon={long}")
     text = response.text
-    print(text)
     data = json.loads(text)
     closest_two = data['stopPoints'][:2]
     closest_stops = [{'stop_point': point['id'], 'distance': point['distance'], 'name': point['commonName']} for point in closest_two]

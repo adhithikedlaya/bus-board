@@ -2,6 +2,7 @@ import requests, os, json
 
 api_key = os.getenv("API_KEY")
 
+
 class Bus:
 
     def __init__(self, bus_id, bus_info, time_to_station):
@@ -16,10 +17,9 @@ class Bus:
             "time_to_station": self.time_to_station
         }
 
-
     @staticmethod
     def load_bus(bus_data):
-        bus_info = BusInfo.load_info(bus_data['platformName'], bus_data['lineId'], bus_data['direction'])
+        bus_info = BusInfo.load_info(bus_data['stationName'], bus_data['lineId'], bus_data['direction'])
         return Bus(bus_data['id'], bus_info, bus_data['timeToStation'])
 
 
@@ -33,7 +33,7 @@ class BusInfo:
     @staticmethod
     def load_info(current_station_name, line_id, direction):
         response = requests.get(
-            f"https://api-nile.tfl.gov.uk/Line/{line_id}/Route/Sequence/{direction}?serviceTypes=Regular&excludeCrowding=true&app_id={api_key}&app_key={api_key}")
+            f"https://api.tfl.gov.uk/Line/{line_id}/Route/Sequence/{direction}?serviceTypes=Regular&excludeCrowding=true")
         text = response.text
         data = json.loads(text)
         station_data = data['stations']
@@ -56,6 +56,7 @@ class BusInfo:
             "direction": self.direction,
             "stations": stations
         }
+
 
 class Station:
     def __init__(self, name):

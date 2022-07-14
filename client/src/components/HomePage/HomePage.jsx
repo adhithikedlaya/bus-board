@@ -23,7 +23,7 @@ export function HomePage(props) {
                 <HomeTitleTag>bus board</HomeTitleTag>
                 <br />
                 <HomeSubTitleContainer>
-                    <HomeSubTitleTag>helping you plan your journey.</HomeSubTitleTag>
+                    <HomeSubTitleTag>helping you plan your journey 🚌</HomeSubTitleTag>
                 </HomeSubTitleContainer>
             </HomeTitleContainer>
 

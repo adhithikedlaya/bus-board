@@ -5,4 +5,22 @@
 
 .input-form {
     display: flex;
+    justify-content: center;
+    padding-top: 2em;
+}
+
+
+.next-buses {
+    font-size: 2em;
+    text-align: center;
+    margin: 0.5em 0;
+}
+
+.input-form-box {
+    height: 2em;
+    width: 15em;
+}
+
+.submit-button {
+    
 }

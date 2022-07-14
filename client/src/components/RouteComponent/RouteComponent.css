@@ -1,0 +1,46 @@
+.route-expansion {
+    list-style: none;
+    padding: 0;
+}
+
+.route-stop {
+    display: block;
+    margin-left: 3%;
+}
+
+.route-item-container {
+    width: 100%;
+    height: 3em;
+    margin-left: 1em;
+    display: flex;
+    align-items: center;
+}
+
+.route-animation {
+    opacity: 0;
+    animation: rotateMenu 400ms ease-in-out forwards;
+    transform-origin: top center;
+}
+
+.route-background-one {
+    background-color: rgba(230, 230, 230, 0.4);
+}
+
+.route-background-two {
+    background-color: rgba(199, 199, 199, 0.4);
+
+}
+    
+@keyframes rotateMenu {
+    0% {
+        opacity: 0.0;
+        transform: rotateX(-90deg)
+    }
+    70% {
+        transform: rotateX(20deg) 
+    }
+    100% {
+        opacity: 1.0;
+        transform: rotateX(0deg) 
+    }
+}

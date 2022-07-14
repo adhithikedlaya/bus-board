@@ -22,15 +22,13 @@ export default function BusComponent(props) {
 
     return (
         <div className="busdata">
-            <div className={props.index % 2 === 0 ? "red-background" : "green-background"}>
+            <div className={props.index % 2 === 0 ? "bus-background-one" : "bus-background-two"}>
                 <div className="itemcontainer">
                     <li className="busitem">Number {bus_info.line_id} arriving at {bus_data.queried_stop} {time_display}</li>
                     <img className={expandedRoute ? "expand-arrow rotated" : "expand-arrow"} src="arrow.svg" width="24" height="24" onClick={busClicked}></img>
-                    {expandedRoute && <div>
-                        <RouteComponent route={bus_info.stations} />
-                    </div>}
                 </div>
             </div>
+            {expandedRoute && <RouteComponent route={bus_info.stations} />}
         </div>
     );
 }

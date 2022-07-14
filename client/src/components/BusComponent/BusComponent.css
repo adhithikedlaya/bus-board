@@ -1,5 +1,6 @@
 .busdata {
     list-style: none;
+    font-family: 'Quicksand', sans-serif;
 }
 
 .itemcontainer {
@@ -12,7 +13,6 @@
 
 .items {
     display: flex;
-    justify-content: space-between;
 }
 
 .expand-arrow {
@@ -31,10 +31,10 @@
     -ms-transform: rotate(90deg);
 }
 
-.red-background {
-    background-color: lightcoral;
+.bus-background-one {
+    background-color: rgba(39, 180, 86, 0.4);
 }
 
-.green-background {
-    background-color: lightgreen;
+.bus-background-two {
+    background-color: rgba(85, 242, 144, 0.4);
 }
