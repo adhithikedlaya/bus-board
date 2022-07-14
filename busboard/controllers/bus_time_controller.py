@@ -16,7 +16,7 @@ def bus_controller(app):
             bus_stops = get_bus_stops(postcode, radius)
             buses = []
             for stop in bus_stops:
-                stop_buses = get_buses(stop['stop_point'])
+                stop_buses = get_buses(stop)
                 for bus in stop_buses:
                     buses.append(bus)
 
@@ -24,10 +24,10 @@ def bus_controller(app):
         sorted_bus_data = sorted(bus_data, key=lambda item: item['bus']['time_to_station'])
         return {"data": sorted_bus_data}
 
-def get_buses(stop_code):
+def get_buses(stop):
     api_key = os.getenv("API_KEY")
     response = requests.get(
-        f"https://api.tfl.gov.uk/StopPoint/{stop_code}/Arrivals")
+        f"https://api.tfl.gov.uk/StopPoint/{stop['stop_point']}/Arrivals")
 
     text = response.text
     data = json.loads(text)
@@ -35,7 +35,7 @@ def get_buses(stop_code):
 
     buses = []
     for bus_data in sorted_data:
-        buses.append((bus_data['stationName'], Bus.load_bus(bus_data)))
+        buses.append((bus_data['stationName'], Bus.load_bus(stop['indicator'], bus_data)))
 
     return buses
 
@@ -47,7 +47,7 @@ def get_bus_stops(postcode, radius):
     text = response.text
     data = json.loads(text)
     closest_two = data['stopPoints'][:2]
-    closest_stops = [{'stop_point': point['id'], 'distance': point['distance'], 'name': point['commonName']} for point in closest_two]
+    closest_stops = [{'stop_point': point['id'], 'distance': point['distance'], 'name': point['commonName'], 'indicator': point['indicator']} for point in closest_two]
 
     return closest_stops
 

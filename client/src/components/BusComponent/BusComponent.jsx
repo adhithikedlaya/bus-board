@@ -24,7 +24,7 @@ export default function BusComponent(props) {
         <div className="busdata">
             <div className={props.index % 2 === 0 ? "bus-background-one" : "bus-background-two"}>
                 <div className="itemcontainer">
-                    <li className="busitem">Number {bus_info.line_id} arriving at {bus_data.queried_stop} {time_display}</li>
+                    <li className="busitem">Number {bus_info.line_id} arriving at {bus_data.queried_stop} ({bus.indicator}), {time_display}</li>
                     <img className={expandedRoute ? "expand-arrow rotated" : "expand-arrow"} src="arrow.svg" width="24" height="24" onClick={busClicked}></img>
                 </div>
             </div>

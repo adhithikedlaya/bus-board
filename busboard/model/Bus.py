@@ -5,22 +5,24 @@ api_key = os.getenv("API_KEY")
 
 class Bus:
 
-    def __init__(self, bus_id, bus_info, time_to_station):
+    def __init__(self, bus_id, bus_info, indicator, time_to_station):
         self.bus_id = bus_id
         self.bus_info = bus_info
+        self.indicator = indicator
         self.time_to_station = time_to_station
 
     def to_json(self):
         return {
             "bus_id": self.bus_id,
             "bus_info": self.bus_info.to_json(),
+            "indicator": self.indicator,
             "time_to_station": self.time_to_station
         }
 
     @staticmethod
-    def load_bus(bus_data):
+    def load_bus(indicator, bus_data):
         bus_info = BusInfo.load_info(bus_data['stationName'], bus_data['lineId'], bus_data['direction'])
-        return Bus(bus_data['id'], bus_info, bus_data['timeToStation'])
+        return Bus(bus_data['id'], bus_info, indicator, bus_data['timeToStation'])
 
 
 class BusInfo:
