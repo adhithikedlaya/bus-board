@@ -26,8 +26,15 @@ def bus_controller(app):
 
 def get_buses(stop):
     api_key = os.getenv("API_KEY")
-    response = requests.get(
-        f"https://api.tfl.gov.uk/StopPoint/{stop['stop_point']}/Arrivals")
+
+    if type(stop) == str:
+        response = requests.get(
+            f"https://api.tfl.gov.uk/StopPoint/{stop}/Arrivals")
+    else:
+        response = requests.get(
+            f"https://api.tfl.gov.uk/StopPoint/{stop['stop_point']}/Arrivals")
+
+
 
     text = response.text
     data = json.loads(text)
@@ -35,7 +42,7 @@ def get_buses(stop):
 
     buses = []
     for bus_data in sorted_data:
-        buses.append((bus_data['stationName'], Bus.load_bus(stop['indicator'], bus_data)))
+        buses.append((bus_data['stationName'], Bus.load_bus(None if type(stop) == str else stop['indicator'], bus_data)))
 
     return buses
 

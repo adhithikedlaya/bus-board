@@ -29,8 +29,8 @@ export function HomePage(props) {
 
             <Tabs>
                 <TabList>
-                    <Tab>Stop Code</Tab>
-                    <Tab>Postcode</Tab>
+                    <Tab>stop code</Tab>
+                    <Tab>postcode</Tab>
                 </TabList>
 
                 <TabPanel>

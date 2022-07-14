@@ -21,6 +21,7 @@ export function BusSearchComponent(props) {
     }
 
     let inputPadding = buses.length === 0 ? "2em" : "0em";
+    let message = props.type === "postcode" ? "buses near you" : "buses for your stopcode";
 
     return (
         <div>
@@ -38,13 +39,15 @@ export function BusSearchComponent(props) {
                         </div>
                     }
 
-                    <input className="submit-button" type="submit" />
+                    <input className="submit-button" type="submit" value="submit"/>
                 </div>
 
             </form>
+
+    
             
             {buses.length !== 0 && <div>
-                <p className="next-buses">your next buses </p>
+                <p className="next-buses">{message}</p>
                 <ul className="buslist">
                     {buses.map((bus_data, i) => {
                         return <BusComponent bus_data={bus_data} index={i} />
