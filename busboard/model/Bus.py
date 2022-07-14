@@ -19,7 +19,7 @@ class Bus:
 
     @staticmethod
     def load_bus(bus_data):
-        bus_info = BusInfo.load_info(bus_data['lineId'], bus_data['direction'])
+        bus_info = BusInfo.load_info(bus_data['platformName'], bus_data['lineId'], bus_data['direction'])
         return Bus(bus_data['id'], bus_info, bus_data['timeToStation'])
 
 
@@ -31,16 +31,21 @@ class BusInfo:
         self.stations = stations
 
     @staticmethod
-    def load_info(line_id, direction):
+    def load_info(current_station_name, line_id, direction):
         response = requests.get(
             f"https://api-nile.tfl.gov.uk/Line/{line_id}/Route/Sequence/{direction}?serviceTypes=Regular&excludeCrowding=true&app_id={api_key}&app_key={api_key}")
         text = response.text
         data = json.loads(text)
         station_data = data['stations']
         stations = []
-
-        for station in station_data:
-            stations.append(Station.load_station(station))
+        should_append = False
+        for raw_station in station_data:
+            station = Station.load_station(raw_station)
+            if should_append:
+                stations.append(station)
+            else:
+                if station.name == current_station_name:
+                    should_append = True
 
         return BusInfo(line_id, direction, stations)
 
@@ -53,16 +58,14 @@ class BusInfo:
         }
 
 class Station:
-    def __init__(self, sid, name):
-        self.sid = sid
+    def __init__(self, name):
         self.name = name
 
     @staticmethod
     def load_station(station):
-        return Station(station['id'], station['name'])
+        return Station(station['name'])
 
     def to_json(self):
         return {
-            "id": self.sid,
             "name": self.name
         }

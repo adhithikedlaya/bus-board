@@ -1,0 +1,40 @@
+.busdata {
+    list-style: none;
+}
+
+.itemcontainer {
+    width: 100%;
+    height: 3em;
+    margin-left: 1em;
+    display: flex;
+    align-items: center;
+}
+
+.items {
+    display: flex;
+    justify-content: space-between;
+}
+
+.expand-arrow {
+    margin-left: auto;
+    margin-right: 2em;
+    transition: transform 0.2s;
+}
+
+.expand-arrow:hover {
+    cursor: pointer;
+}
+
+.rotated {
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+}
+
+.red-background {
+    background-color: lightcoral;
+}
+
+.green-background {
+    background-color: lightgreen;
+}

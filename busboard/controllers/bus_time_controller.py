@@ -7,14 +7,12 @@ from busboard.model.Bus import Bus, BusInfo, Station
 def bus_controller(app):
     @app.route("/next_buses", methods=['GET'])
     def bus_times():
-        data = request.get_json()
-
-        if 'stop_code' in data:
-            stop_code = data['stop_code']
+        if 'stop_code' in request.args:
+            stop_code = request.args.get('stop_code')
             buses = get_buses(stop_code)
-        elif 'postcode' in data:
-            postcode = data['postcode']
-            radius = data['radius'] if 'radius' in data else 200
+        elif 'postcode' in request.args:
+            postcode = request.args.get('postcode')
+            radius = request.args.get('radius') if 'radius' in request.args else 200
             bus_stops = get_bus_stops(postcode, radius)
             buses = []
             for stop in bus_stops:
@@ -22,7 +20,9 @@ def bus_controller(app):
                 for bus in stop_buses:
                     buses.append(bus)
 
-        return {"buses": [{'queried_stop': bus[0], 'bus': bus[1].to_json()} for bus in buses]}
+        bus_data = [{'queried_stop': bus[0], 'bus': bus[1].to_json()} for bus in buses]
+        sorted_bus_data = sorted(bus_data, key=lambda item: item['bus']['time_to_station'])
+        return {"data": sorted_bus_data}
 
 def get_buses(stop_code):
     api_key = os.getenv("API_KEY")
@@ -31,7 +31,6 @@ def get_buses(stop_code):
 
     text = response.text
     data = json.loads(text)
-
     sorted_data = sorted(data, key=lambda item: item['timeToStation'])[:5]
 
     buses = []
@@ -42,10 +41,12 @@ def get_buses(stop_code):
 
 
 def get_bus_stops(postcode, radius):
+    api_key = os.getenv("API_KEY")
     long, lat = get_coordinates(postcode)
     response = requests.get(
-        f"https://api-nile.tfl.gov.uk/StopPoint?stopTypes=NaptanPublicBusCoachTram&radius={radius}&useStopPointHierarchy=false&modes=bus&categories=none&returnLines=false&lat={lat}&lon={long}")
+        f"https://api-nile.tfl.gov.uk/StopPoint?stopTypes=NaptanPublicBusCoachTram&radius={radius}&useStopPointHierarchy=false&modes=bus&categories=none&returnLines=false&lat={lat}&lon={long}&app_id={api_key}&app_key={api_key}")
     text = response.text
+    print(text)
     data = json.loads(text)
     closest_two = data['stopPoints'][:2]
     closest_stops = [{'stop_point': point['id'], 'distance': point['distance'], 'name': point['commonName']} for point in closest_two]
